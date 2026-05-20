@@ -36,7 +36,7 @@ class DatasetConfig(TypedDict):
     enabled: bool
 
 
-PROJECT_ROOT: Path = Path(__file__).resolve().parent[2]
+PROJECT_ROOT: Path = Path(__file__).resolve().parents[2]
 DATA_DIR: Path = PROJECT_ROOT / "data"
 RAW_DIR: Path = DATA_DIR / "raw"
 INTERIM_DIR: Path = DATA_DIR / "interim"
@@ -439,18 +439,31 @@ DATASETS: dict[str, DatasetConfig] = {
     },
 }
 
-CORE_DATASETS = {key: cfg for key, cfg in DATASETS.items() if cfg["enabled"]}
 
-DATASET_CODES = {key: cfg["eurostat_code"] for key, cfg in DATASETS.items()}
+# ------------------------------------------------------------------
+# Derived lookups (kept eager because DATASETS is small)
+# ------------------------------------------------------------------
 
-DATASET_NAMES = {key: cfg["friendly_name"] for key, cfg in DATASETS.items()}
+ENABLED_DATASETS: dict[str, DatasetConfig] = {
+    key: cfg for key, cfg in DATASETS.items() if cfg["enabled"]
+}
 
-RAW_FILES = {key: RAW_DIR / cfg["raw_file"] for key, cfg in DATASETS.items()}
+DATASET_CODES: dict[str, str] = {
+    key: cfg["eurostat_code"] for key, cfg in DATASETS.items()
+}
 
-INTERIM_FILES = {
+DATASET_NAMES: dict[str, str] = {
+    key: cfg["friendly_name"] for key, cfg in DATASETS.items()
+}
+
+RAW_FILES: dict[str, Path] = {
+    key: RAW_DIR / cfg["raw_file"] for key, cfg in DATASETS.items()
+}
+
+INTERIM_FILES: dict[str, Path] = {
     key: INTERIM_DIR / cfg["interim_file"] for key, cfg in DATASETS.items()
 }
 
-PROCESSED_FILES = {
+PROCESSED_FILES: dict[str, Path] = {
     key: PROCESSED_DIR / cfg["processed_file"] for key, cfg in DATASETS.items()
 }

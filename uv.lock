@@ -1038,7 +1038,7 @@ wheels = [
 [[package]]
 name = "platform-tourism-demand-shaping"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "marimo" },
     { name = "matplotlib" },
