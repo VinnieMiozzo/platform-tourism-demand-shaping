@@ -1,0 +1,381 @@
+{
+  "version": "1",
+  "metadata": {
+    "marimo_version": "0.23.6",
+    "script_metadata_hash": null
+  },
+  "cells": [
+    {
+      "id": "Hbol",
+      "code_hash": "1d0db38904205bec4d6f6f6a1f6cec3e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "MJUe",
+      "code_hash": "1d43b81eeb225bec74f3493e2b3d2273",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h1 id=\"01-data-exploration\">01 \u2014 Data Exploration</h1>\n<span class=\"paragraph\"><strong>Goal.</strong> Understand the shape of the raw Eurostat JSON-stat payloads\nso the cleaning logic in <code>clean.py</code> is informed by the data, not guessed at.</span>\n<span class=\"paragraph\"><strong>Plan</strong></span>\n<ol>\n<li>Inspect the JSON-stat structure of one dataset (interactive dropdown).</li>\n<li>Parse to a DataFrame with dimension <strong>codes</strong> as columns.</li>\n<li>Coverage checks for the selected dataset.</li>\n<li>Summary scorecard across <strong>every</strong> enabled dataset.</li>\n<li>Capture quirks that will need handling in cleaning.</li>\n</ol></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "vblA",
+      "code_hash": "95e3693a8df49892d832c43f4b45d483",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bkHC",
+      "code_hash": "2a0050c46e556eb77a18f35d55fd45d6",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Raw directory:</strong> <code>/home/vinicius/portfolio/platform-tourism-demand-shaping/data/raw</code></span>\n<span class=\"paragraph\"><strong>Enabled datasets:</strong> 7</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lEQa",
+      "code_hash": "6c73c0ef7b48c16c651112839007b5ff",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='lEQa-0' random-id='b19ffb50-d964-2a44-37a3-17357cba14e5'><marimo-table data-initial-value='[]' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Ingested raw files&lt;/span&gt;&lt;/span&gt;&quot;' data-data='&quot;[{&#92;&quot;_marimo_row_id&#92;&quot;:0,&#92;&quot;file&#92;&quot;:&#92;&quot;tin00171.json&#92;&quot;,&#92;&quot;size_kb&#92;&quot;:25.8},{&#92;&quot;_marimo_row_id&#92;&quot;:1,&#92;&quot;file&#92;&quot;:&#92;&quot;tin00173.json&#92;&quot;,&#92;&quot;size_kb&#92;&quot;:16.7},{&#92;&quot;_marimo_row_id&#92;&quot;:2,&#92;&quot;file&#92;&quot;:&#92;&quot;tin00174.json&#92;&quot;,&#92;&quot;size_kb&#92;&quot;:28.1},{&#92;&quot;_marimo_row_id&#92;&quot;:3,&#92;&quot;file&#92;&quot;:&#92;&quot;tin00175.json&#92;&quot;,&#92;&quot;size_kb&#92;&quot;:28.6},{&#92;&quot;_marimo_row_id&#92;&quot;:4,&#92;&quot;file&#92;&quot;:&#92;&quot;tin00177.json&#92;&quot;,&#92;&quot;size_kb&#92;&quot;:43.5},{&#92;&quot;_marimo_row_id&#92;&quot;:5,&#92;&quot;file&#92;&quot;:&#92;&quot;tin00181.json&#92;&quot;,&#92;&quot;size_kb&#92;&quot;:17.3},{&#92;&quot;_marimo_row_id&#92;&quot;:6,&#92;&quot;file&#92;&quot;:&#92;&quot;tour_ce_omr.json&#92;&quot;,&#92;&quot;size_kb&#92;&quot;:476.2}]&quot;' data-total-rows='7' data-total-columns='2' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='false' data-page-size='10' data-field-types='[[&quot;file&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;size_kb&quot;,[&quot;number&quot;,&quot;float64&quot;]]]' data-selection='&quot;multi&quot;' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='true' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "PKri",
+      "code_hash": "2e5f72e65c3ebe3327aa939037f6180a",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Xref",
+      "code_hash": "d7bab0b5e1bc1e547221c0072c3bf3b2",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"1-inspect-the-json-stat-structure\">1. Inspect the JSON-stat structure</h2>\n<span class=\"paragraph\">Pick a dataset \u2014 sections 1\u20133 are reactive to this choice.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "SFPL",
+      "code_hash": "2e7fb0cbdf12556f84b9c33d80e2347e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='SFPL-0' random-id='850874a6-6d42-1d21-5220-55ea9967d5cd'><marimo-dropdown data-initial-value='[&quot;platform_monthly&quot;]' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Dataset to inspect&lt;/span&gt;&lt;/span&gt;&quot;' data-options='[&quot;platform_monthly&quot;,&quot;total_accommodation_nights_monthly&quot;,&quot;hotel_occupancy_monthly&quot;,&quot;arrivals_annual&quot;,&quot;accommodation_nights_annual&quot;,&quot;accommodation_nights_by_type&quot;,&quot;capacity_establishments_bedplaces&quot;]' data-allow-select-none='false' data-searchable='false' data-full-width='false'></marimo-dropdown></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "BYtC",
+      "code_hash": "dba8683016be24e3542519d70330df38",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "RGSE",
+      "code_hash": "8bc18b7e3173c62b262d96bda9562f8c",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>File:</strong> <code>tin00174.json</code></span>\n<span class=\"paragraph\"><strong>Label:</strong> Arrivals of residents/non-residents at tourist accommodation establishments</span>\n<span class=\"paragraph\"><strong>Source:</strong> ESTAT</span>\n<span class=\"paragraph\"><strong>Updated:</strong> 2026-05-08T23:00:00+0200</span>\n<span class=\"paragraph\"><strong>Top-level keys:</strong> <code>['version', 'class', 'label', 'source', 'updated', 'value', 'status', 'id', 'size', 'dimension', 'extension']</code></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Kclp",
+      "code_hash": "67feb00d37b72dbfb91433abfb53ee03",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='Kclp-0' random-id='b386ff8d-8387-b45a-588a-99de9fe6ce70'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;dimension&#92;&quot;:&#92;&quot;freq&#92;&quot;,&#92;&quot;n_categories&#92;&quot;:1},{&#92;&quot;dimension&#92;&quot;:&#92;&quot;c_resid&#92;&quot;,&#92;&quot;n_categories&#92;&quot;:3},{&#92;&quot;dimension&#92;&quot;:&#92;&quot;unit&#92;&quot;,&#92;&quot;n_categories&#92;&quot;:1},{&#92;&quot;dimension&#92;&quot;:&#92;&quot;nace_r2&#92;&quot;,&#92;&quot;n_categories&#92;&quot;:1},{&#92;&quot;dimension&#92;&quot;:&#92;&quot;geo&#92;&quot;,&#92;&quot;n_categories&#92;&quot;:41},{&#92;&quot;dimension&#92;&quot;:&#92;&quot;time&#92;&quot;,&#92;&quot;n_categories&#92;&quot;:12}]&quot;' data-total-rows='6' data-total-columns='2' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='false' data-page-size='10' data-field-types='[[&quot;dimension&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;n_categories&quot;,[&quot;integer&quot;,&quot;int64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "Fully-expanded cells: 1,476\nValues in payload:    1,280\nDensity:              86.7%\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "emfo",
+      "code_hash": "eabd7c917ca6d304973dd2f325d66d2f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "\nfreq: 1 categories\n  A          -> Annual\n\nc_resid: 3 categories\n  DOM        -> Domestic country\n  FOR        -> Foreign country\n  TOTAL      -> Total\n\nunit: 1 categories\n  NR         -> Number\n\nnace_r2: 1 categories\n  I551-I553  -> Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks\n\ngeo: 41 categories\n  EU27_2020  -> European Union - 27 countries (from 2020)\n  EA21       -> Euro area \u2013 21 countries (from 2026)\n  EA20       -> Euro area \u2013 20 countries (2023-2025)\n  EA19       -> Euro area - 19 countries  (2015-2022)\n  BE         -> Belgium\n\ntime: 12 categories\n  2013       -> 2013\n  2014       -> 2014\n  2015       -> 2015\n  2016       -> 2016\n  2017       -> 2017\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "Hstk",
+      "code_hash": "4ff98cc9363ece54d0b58107cb0887fa",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"2-parsed-dataframe\">2. Parsed DataFrame</h2>\n<span class=\"paragraph\">Columns are JSON-stat dimension <strong>codes</strong> (<code>geo</code>, <code>time</code>, <code>unit</code>, ...) thanks\nto the rename in <code>load_dataset()</code>. The cell <em>values</em> inside the dimension\ncolumns are still labels (e.g. <code>\"Italy\"</code>, <code>\"European Union - 27 ...\"</code>).\nWhether to keep labels or switch to codes for values is a clean.py question.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "nWHF",
+      "code_hash": "c7e2eb3bf0b5150389e0b779ea7e7d2e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Shape:</strong> (1476, 7)  \u2022  <strong>Columns:</strong> <code>['freq', 'c_resid', 'unit', 'nace_r2', 'geo', 'time', 'value']</code></span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "iLit",
+      "code_hash": "298b523728d171ff66d0777e63598956",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='iLit-0' random-id='58b1f28f-9f85-8bec-5070-8c5fc45be0d6'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2013&#92;&quot;,&#92;&quot;value&#92;&quot;:472472080.0},{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2014&#92;&quot;,&#92;&quot;value&#92;&quot;:486321742.0},{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2015&#92;&quot;,&#92;&quot;value&#92;&quot;:511049249.0},{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2016&#92;&quot;,&#92;&quot;value&#92;&quot;:530364067.0},{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2017&#92;&quot;,&#92;&quot;value&#92;&quot;:553608891.0},{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2018&#92;&quot;,&#92;&quot;value&#92;&quot;:572881772.0},{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2019&#92;&quot;,&#92;&quot;value&#92;&quot;:592903034.0},{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2020&#92;&quot;,&#92;&quot;value&#92;&quot;:354436909.0},{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2021&#92;&quot;,&#92;&quot;value&#92;&quot;:438301914.0},{&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2022&#92;&quot;,&#92;&quot;value&#92;&quot;:583638931.0}]&quot;' data-total-rows='1476' data-total-columns='7' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;freq&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;c_resid&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;unit&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;nace_r2&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;geo&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;time&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;value&quot;,[&quot;number&quot;,&quot;float64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "ZHCJ",
+      "code_hash": "2d6f3a571d8bc34d8ba74a7b6288325f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "<class 'pandas.DataFrame'>\nRangeIndex: 1476 entries, 0 to 1475\nData columns (total 7 columns):\n #   Column   Non-Null Count  Dtype  \n---  ------   --------------  -----  \n 0   freq     1476 non-null   str    \n 1   c_resid  1476 non-null   str    \n 2   unit     1476 non-null   str    \n 3   nace_r2  1476 non-null   str    \n 4   geo      1476 non-null   str    \n 5   time     1476 non-null   str    \n 6   value    1280 non-null   float64\ndtypes: float64(1), str(6)\nmemory usage: 299.6 KB\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "ROlb",
+      "code_hash": "42f07f21ed9abeb2442624acf0833450",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"3-coverage-checks-selected-dataset\">3. Coverage checks (selected dataset)</h2></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "qnkX",
+      "code_hash": "d80fea83b858350c960b7fd5872632b4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><span class=\"paragraph\"><strong>Time range:</strong> 2013 \u2192 2024<br />\n<strong>Distinct time points:</strong> 12<br />\n<strong>Distinct geos:</strong> 41<br />\n<strong>Null values:</strong> 196 of 1,476 (13.3%)<br />\n<strong>Countries With null values</strong>: ['Euro area \u2013 21 countries (from 2026)', 'Euro area \u2013 20 countries (2023-2025)', 'Euro area - 19 countries  (2015-2022)', 'Ireland', 'Slovenia', 'Iceland', 'Norway', 'Switzerland', 'United Kingdom', 'Montenegro', 'Albania', 'Serbia', 'T\u00fcrkiye', 'Romania']</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "fQtt",
+      "code_hash": "1c8e94e0f184cce58617935bc7098b1e",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='fQtt-0' random-id='0099ef07-e8a3-29e8-2998-0b0c825774fa'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;&#92;&quot;:12,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2013&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN},{&#92;&quot;&#92;&quot;:13,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2014&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN},{&#92;&quot;&#92;&quot;:14,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2015&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN},{&#92;&quot;&#92;&quot;:15,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2016&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN},{&#92;&quot;&#92;&quot;:16,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2017&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN},{&#92;&quot;&#92;&quot;:17,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2018&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN},{&#92;&quot;&#92;&quot;:18,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2019&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN},{&#92;&quot;&#92;&quot;:19,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2020&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN},{&#92;&quot;&#92;&quot;:20,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2021&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN},{&#92;&quot;&#92;&quot;:21,&#92;&quot;freq&#92;&quot;:&#92;&quot;Annual&#92;&quot;,&#92;&quot;c_resid&#92;&quot;:&#92;&quot;Domestic country&#92;&quot;,&#92;&quot;unit&#92;&quot;:&#92;&quot;Number&#92;&quot;,&#92;&quot;nace_r2&#92;&quot;:&#92;&quot;Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks&#92;&quot;,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;time&#92;&quot;:&#92;&quot;2022&#92;&quot;,&#92;&quot;value&#92;&quot;:NaN}]&quot;' data-total-rows='196' data-total-columns='7' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;freq&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;c_resid&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;unit&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;nace_r2&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;geo&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;time&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;value&quot;,[&quot;number&quot;,&quot;float64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[[&quot;&quot;,[&quot;integer&quot;,&quot;int64&quot;]]]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "TqIu",
+      "code_hash": "d8bcad2e07d63dd86d56ebc718e76b54",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='TqIu-0' random-id='092dece3-84ea-1f99-a47b-80c1a932ae1a'><marimo-table data-initial-value='[]' data-label='&quot;&lt;span class=&#92;&quot;markdown prose dark:prose-invert contents&#92;&quot;&gt;&lt;span class=&#92;&quot;paragraph&#92;&quot;&gt;Top 15 geos by row count&lt;/span&gt;&lt;/span&gt;&quot;' data-data='&quot;[{&#92;&quot;_marimo_row_id&#92;&quot;:0,&#92;&quot;geo&#92;&quot;:&#92;&quot;European Union - 27 countries (from 2020)&#92;&quot;,&#92;&quot;rows&#92;&quot;:36},{&#92;&quot;_marimo_row_id&#92;&quot;:1,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 21 countries (from 2026)&#92;&quot;,&#92;&quot;rows&#92;&quot;:36},{&#92;&quot;_marimo_row_id&#92;&quot;:2,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area &#92;&#92;u2013 20 countries (2023-2025)&#92;&quot;,&#92;&quot;rows&#92;&quot;:36},{&#92;&quot;_marimo_row_id&#92;&quot;:3,&#92;&quot;geo&#92;&quot;:&#92;&quot;Euro area - 19 countries  (2015-2022)&#92;&quot;,&#92;&quot;rows&#92;&quot;:36},{&#92;&quot;_marimo_row_id&#92;&quot;:4,&#92;&quot;geo&#92;&quot;:&#92;&quot;Belgium&#92;&quot;,&#92;&quot;rows&#92;&quot;:36},{&#92;&quot;_marimo_row_id&#92;&quot;:5,&#92;&quot;geo&#92;&quot;:&#92;&quot;Bulgaria&#92;&quot;,&#92;&quot;rows&#92;&quot;:36},{&#92;&quot;_marimo_row_id&#92;&quot;:6,&#92;&quot;geo&#92;&quot;:&#92;&quot;Czechia&#92;&quot;,&#92;&quot;rows&#92;&quot;:36},{&#92;&quot;_marimo_row_id&#92;&quot;:7,&#92;&quot;geo&#92;&quot;:&#92;&quot;Denmark&#92;&quot;,&#92;&quot;rows&#92;&quot;:36},{&#92;&quot;_marimo_row_id&#92;&quot;:8,&#92;&quot;geo&#92;&quot;:&#92;&quot;Germany&#92;&quot;,&#92;&quot;rows&#92;&quot;:36},{&#92;&quot;_marimo_row_id&#92;&quot;:9,&#92;&quot;geo&#92;&quot;:&#92;&quot;Estonia&#92;&quot;,&#92;&quot;rows&#92;&quot;:36}]&quot;' data-total-rows='15' data-total-columns='2' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='true' data-page-size='10' data-field-types='[[&quot;geo&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;rows&quot;,[&quot;integer&quot;,&quot;int64&quot;]]]' data-selection='&quot;multi&quot;' data-show-filters='true' data-show-download='true' data-show-column-summaries='true' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[]' data-has-stable-row-id='true' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "Vxnm",
+      "code_hash": "bf8fb8ded883202bb3adac1c95777fa1",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"4-summary-across-all-enabled-datasets\">4. Summary across all enabled datasets</h2>\n<span class=\"paragraph\">Same loader, applied to every enabled dataset. A dataset that errors here\nor has wildly different shape from its peers is a candidate for special\nhandling in <code>clean.py</code>.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "DnEU",
+      "code_hash": "48b4b3409093aa48ac57929b5ff79271",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/html": "<marimo-ui-element object-id='DnEU-0' random-id='9a42c1e6-0742-8643-241a-9a425181a0ee'><marimo-table data-initial-value='[]' data-label='null' data-data='&quot;[{&#92;&quot;dataset&#92;&quot;:&#92;&quot;platform_monthly&#92;&quot;,&#92;&quot;rows&#92;&quot;:29952,&#92;&quot;n_dims&#92;&quot;:7,&#92;&quot;time_min&#92;&quot;:&#92;&quot;2018&#92;&quot;,&#92;&quot;time_max&#92;&quot;:&#92;&quot;2025&#92;&quot;,&#92;&quot;n_geo&#92;&quot;:32,&#92;&quot;pct_null&#92;&quot;:0.1},{&#92;&quot;dataset&#92;&quot;:&#92;&quot;total_accommodation_nights_monthly&#92;&quot;,&#92;&quot;rows&#92;&quot;:1512,&#92;&quot;n_dims&#92;&quot;:6,&#92;&quot;time_min&#92;&quot;:&#92;&quot;2025-04&#92;&quot;,&#92;&quot;time_max&#92;&quot;:&#92;&quot;2026-03&#92;&quot;,&#92;&quot;n_geo&#92;&quot;:42,&#92;&quot;pct_null&#92;&quot;:19.8},{&#92;&quot;dataset&#92;&quot;:&#92;&quot;hotel_occupancy_monthly&#92;&quot;,&#92;&quot;rows&#92;&quot;:1008,&#92;&quot;n_dims&#92;&quot;:5,&#92;&quot;time_min&#92;&quot;:&#92;&quot;2025-04&#92;&quot;,&#92;&quot;time_max&#92;&quot;:&#92;&quot;2026-03&#92;&quot;,&#92;&quot;n_geo&#92;&quot;:42,&#92;&quot;pct_null&#92;&quot;:16.6},{&#92;&quot;dataset&#92;&quot;:&#92;&quot;arrivals_annual&#92;&quot;,&#92;&quot;rows&#92;&quot;:1476,&#92;&quot;n_dims&#92;&quot;:6,&#92;&quot;time_min&#92;&quot;:&#92;&quot;2013&#92;&quot;,&#92;&quot;time_max&#92;&quot;:&#92;&quot;2024&#92;&quot;,&#92;&quot;n_geo&#92;&quot;:41,&#92;&quot;pct_null&#92;&quot;:13.3},{&#92;&quot;dataset&#92;&quot;:&#92;&quot;accommodation_nights_annual&#92;&quot;,&#92;&quot;rows&#92;&quot;:1476,&#92;&quot;n_dims&#92;&quot;:6,&#92;&quot;time_min&#92;&quot;:&#92;&quot;2013&#92;&quot;,&#92;&quot;time_max&#92;&quot;:&#92;&quot;2024&#92;&quot;,&#92;&quot;n_geo&#92;&quot;:41,&#92;&quot;pct_null&#92;&quot;:12.3},{&#92;&quot;dataset&#92;&quot;:&#92;&quot;accommodation_nights_by_type&#92;&quot;,&#92;&quot;rows&#92;&quot;:2460,&#92;&quot;n_dims&#92;&quot;:6,&#92;&quot;time_min&#92;&quot;:&#92;&quot;2013&#92;&quot;,&#92;&quot;time_max&#92;&quot;:&#92;&quot;2024&#92;&quot;,&#92;&quot;n_geo&#92;&quot;:41,&#92;&quot;pct_null&#92;&quot;:12.4},{&#92;&quot;dataset&#92;&quot;:&#92;&quot;capacity_establishments_bedplaces&#92;&quot;,&#92;&quot;rows&#92;&quot;:1008,&#92;&quot;n_dims&#92;&quot;:6,&#92;&quot;time_min&#92;&quot;:&#92;&quot;2014&#92;&quot;,&#92;&quot;time_max&#92;&quot;:&#92;&quot;2025&#92;&quot;,&#92;&quot;n_geo&#92;&quot;:42,&#92;&quot;pct_null&#92;&quot;:23.9}]&quot;' data-total-rows='7' data-total-columns='6' data-max-columns='50' data-banner-text='&quot;&quot;' data-pagination='false' data-page-size='10' data-field-types='[[&quot;rows&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;n_dims&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;time_min&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;time_max&quot;,[&quot;string&quot;,&quot;str&quot;]],[&quot;n_geo&quot;,[&quot;integer&quot;,&quot;int64&quot;]],[&quot;pct_null&quot;,[&quot;number&quot;,&quot;float64&quot;]]]' data-show-filters='true' data-show-download='true' data-show-column-summaries='false' data-show-data-types='true' data-show-page-size-selector='true' data-show-column-explorer='true' data-show-chart-builder='true' data-row-headers='[[&quot;dataset&quot;,[&quot;string&quot;,&quot;str&quot;]]]' data-has-stable-row-id='false' data-lazy='false' data-preload='false'></marimo-table></marimo-ui-element>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "fxuC",
+      "code_hash": "cc2ab55e2eca8ddc23a7c110866f7f92",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"4b-per-dataset-detail-automated-walkthrough\">4b. Per-dataset detail \u2014 automated walkthrough</h2>\n<span class=\"paragraph\">Shape, columns, unique values per dimension, and null density for every\nenabled dataset. Scroll through; anything that looks out of place\nbecomes a bullet in section 5.</span></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "bLzp",
+      "code_hash": "5a116ba37b2800ba930fcaccbb662ff4",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": [
+        {
+          "type": "stream",
+          "name": "stdout",
+          "text": "\n========================================================================\n[1]  platform_monthly\n========================================================================\n  shape:   (29952, 8)\n  columns: ['freq', 'indic_to', 'c_resid', 'month', 'unit', 'geo', 'time', 'value']\n\n    freq             1 unique \u2192 ['Annual']\n    indic_to         3 unique \u2192 ['Stays', 'Length of stay', 'Nights spent']\n    c_resid          3 unique \u2192 ['Domestic country', 'Foreign country', 'Total']\n    month           13 unique \u2192 ['Total', 'January', 'February', 'March', 'April', 'May', 'June', 'July', '... (+5 more)']\n    unit             1 unique \u2192 ['Number']\n    geo             32 unique \u2192 ['European Union - 27 countries (from 2020)', 'Belgium', 'Bulgaria', 'Czechia', 'Denmark', 'Germany', 'Estonia', 'Ireland', '... (+24 more)']\n    time             8 unique \u2192 ['2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025']\n    value             29,918 / 29,952 non-null (0.1% null)\n\n========================================================================\n[2]  total_accommodation_nights_monthly\n========================================================================\n  shape:   (1512, 7)\n  columns: ['freq', 'c_resid', 'unit', 'nace_r2', 'geo', 'time', 'value']\n\n    freq             1 unique \u2192 ['Monthly']\n    c_resid          3 unique \u2192 ['Domestic country', 'Foreign country', 'Total']\n    unit             1 unique \u2192 ['Number']\n    nace_r2          1 unique \u2192 ['Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks']\n    geo             42 unique \u2192 ['European Union - 27 countries (from 2020)', 'Euro area \u2013 21 countries (from 2026)', 'Euro area \u2013 20 countries (2023-2025)', 'Euro area - 19 countries  (2015-2022)', 'Belgium', 'Bulgaria', 'Czechia', 'Denmark', '... (+34 more)']\n    time            12 unique \u2192 ['2025-04', '2025-05', '2025-06', '2025-07', '2025-08', '2025-09', '2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03']\n    value              1,212 / 1,512 non-null (19.8% null)\n\n========================================================================\n[3]  hotel_occupancy_monthly\n========================================================================\n  shape:   (1008, 6)\n  columns: ['freq', 'accomunit', 'unit', 'geo', 'time', 'value']\n\n    freq             1 unique \u2192 ['Monthly']\n    accomunit        2 unique \u2192 ['Bedplaces', 'Bedrooms']\n    unit             1 unique \u2192 ['Percentage']\n    geo             42 unique \u2192 ['European Union - 27 countries (from 2020)', 'Euro area \u2013 21 countries (from 2026)', 'Euro area \u2013 20 countries (2023-2025)', 'Euro area - 19 countries  (2015-2022)', 'Belgium', 'Bulgaria', 'Czechia', 'Denmark', '... (+34 more)']\n    time            12 unique \u2192 ['2025-04', '2025-05', '2025-06', '2025-07', '2025-08', '2025-09', '2025-10', '2025-11', '2025-12', '2026-01', '2026-02', '2026-03']\n    value                841 / 1,008 non-null (16.6% null)\n\n========================================================================\n[4]  arrivals_annual\n========================================================================\n  shape:   (1476, 7)\n  columns: ['freq', 'c_resid', 'unit', 'nace_r2', 'geo', 'time', 'value']\n\n    freq             1 unique \u2192 ['Annual']\n    c_resid          3 unique \u2192 ['Domestic country', 'Foreign country', 'Total']\n    unit             1 unique \u2192 ['Number']\n    nace_r2          1 unique \u2192 ['Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks']\n    geo             41 unique \u2192 ['European Union - 27 countries (from 2020)', 'Euro area \u2013 21 countries (from 2026)', 'Euro area \u2013 20 countries (2023-2025)', 'Euro area - 19 countries  (2015-2022)', 'Belgium', 'Bulgaria', 'Czechia', 'Denmark', '... (+33 more)']\n    time            12 unique \u2192 ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024']\n    value              1,280 / 1,476 non-null (13.3% null)\n\n========================================================================\n[5]  accommodation_nights_annual\n========================================================================\n  shape:   (1476, 7)\n  columns: ['freq', 'c_resid', 'unit', 'nace_r2', 'geo', 'time', 'value']\n\n    freq             1 unique \u2192 ['Annual']\n    c_resid          3 unique \u2192 ['Domestic country', 'Foreign country', 'Total']\n    unit             1 unique \u2192 ['Number']\n    nace_r2          1 unique \u2192 ['Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks']\n    geo             41 unique \u2192 ['European Union - 27 countries (from 2020)', 'Euro area \u2013 21 countries (from 2026)', 'Euro area \u2013 20 countries (2023-2025)', 'Euro area - 19 countries  (2015-2022)', 'Belgium', 'Bulgaria', 'Czechia', 'Denmark', '... (+33 more)']\n    time            12 unique \u2192 ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024']\n    value              1,294 / 1,476 non-null (12.3% null)\n\n========================================================================\n[6]  accommodation_nights_by_type\n========================================================================\n  shape:   (2460, 7)\n  columns: ['freq', 'c_resid', 'unit', 'nace_r2', 'geo', 'time', 'value']\n\n    freq             1 unique \u2192 ['Annual']\n    c_resid          1 unique \u2192 ['Total']\n    unit             1 unique \u2192 ['Number']\n    nace_r2          5 unique \u2192 ['Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks', 'Hotels and similar accommodation', 'Holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks', 'Holiday and other short-stay accommodation', 'Camping grounds, recreational vehicle parks and trailer parks']\n    geo             41 unique \u2192 ['European Union - 27 countries (from 2020)', 'Euro area \u2013 21 countries (from 2026)', 'Euro area \u2013 20 countries (2023-2025)', 'Euro area - 19 countries  (2015-2022)', 'Belgium', 'Bulgaria', 'Czechia', 'Denmark', '... (+33 more)']\n    time            12 unique \u2192 ['2013', '2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024']\n    value              2,155 / 2,460 non-null (12.4% null)\n\n========================================================================\n[7]  capacity_establishments_bedplaces\n========================================================================\n  shape:   (1008, 7)\n  columns: ['freq', 'accomunit', 'unit', 'nace_r2', 'geo', 'time', 'value']\n\n    freq             1 unique \u2192 ['Annual']\n    accomunit        2 unique \u2192 ['Establishments', 'Bedplaces']\n    unit             1 unique \u2192 ['Number']\n    nace_r2          1 unique \u2192 ['Hotels; holiday and other short-stay accommodation; camping grounds, recreational vehicle parks and trailer parks']\n    geo             42 unique \u2192 ['European Union - 27 countries (from 2020)', 'Euro area \u2013 21 countries (from 2026)', 'Euro area \u2013 20 countries (2023-2025)', 'Euro area - 19 countries  (2015-2022)', 'Belgium', 'Bulgaria', 'Czechia', 'Denmark', '... (+34 more)']\n    time            12 unique \u2192 ['2014', '2015', '2016', '2017', '2018', '2019', '2020', '2021', '2022', '2023', '2024', '2025']\n    value                767 / 1,008 non-null (23.9% null)\n",
+          "mimetype": "text/plain"
+        }
+      ]
+    },
+    {
+      "id": "ulZA",
+      "code_hash": "9364095c412b4b5f5c5213b779b73e0f",
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/markdown": "<span class=\"markdown prose dark:prose-invert contents\"><h2 id=\"5-notes-for-cleanpy\">5. Notes for clean.py</h2>\n<span class=\"paragraph\">UNIVERSAL TRANSFORMATIONS (apply to every dataset):</span>\n<div class=\"language-tsql highlight\"><pre><span></span><code><span class=\"mf\">1.</span><span class=\"w\"> </span><span class=\"k\">Column</span><span class=\"w\"> </span><span class=\"k\">names</span><span class=\"err\">:</span><span class=\"w\"> </span><span class=\"n\">rename</span><span class=\"w\"> </span><span class=\"n\">pyjstat</span><span class=\"w\"> </span><span class=\"n\">labels</span><span class=\"w\"> </span><span class=\"k\">to</span><span class=\"w\"> </span><span class=\"n\">JSON</span><span class=\"o\">-</span><span class=\"n\">stat</span><span class=\"w\"> </span><span class=\"n\">codes</span><span class=\"w\"> </span><span class=\"p\">(</span><span class=\"n\">already</span><span class=\"w\"> </span><span class=\"ow\">in</span><span class=\"w\"> </span><span class=\"n\">load_dataset</span><span class=\"p\">).</span>\n\n<span class=\"mf\">2.</span><span class=\"w\"> </span><span class=\"n\">Cell</span><span class=\"w\"> </span><span class=\"k\">values</span><span class=\"err\">:</span><span class=\"w\"> </span><span class=\"n\">rename</span><span class=\"w\"> </span><span class=\"n\">labels</span><span class=\"w\"> </span><span class=\"k\">to</span><span class=\"w\"> </span><span class=\"n\">JSON</span><span class=\"o\">-</span><span class=\"n\">stat</span><span class=\"w\"> </span><span class=\"n\">codes</span><span class=\"w\"> </span><span class=\"n\">via</span><span class=\"w\"> </span><span class=\"n\">payload</span><span class=\"o\">[</span><span class=\"n\">&quot;dimension&quot;</span><span class=\"o\">][</span><span class=\"n\">dim</span><span class=\"o\">][</span><span class=\"n\">&quot;category&quot;</span><span class=\"o\">][</span><span class=\"n\">&quot;index&quot;</span><span class=\"o\">]</span><span class=\"p\">.</span>\n\n<span class=\"mf\">3.</span><span class=\"w\"> </span><span class=\"nc\">Time</span><span class=\"w\"> </span><span class=\"k\">column</span><span class=\"err\">:</span><span class=\"w\"> </span><span class=\"nf\">parse</span><span class=\"w\"> </span><span class=\"k\">to</span><span class=\"w\"> </span><span class=\"n\">pd</span><span class=\"p\">.</span><span class=\"nc\">Timestamp</span><span class=\"w\"> </span><span class=\"k\">using</span><span class=\"w\"> </span><span class=\"n\">a</span><span class=\"w\"> </span><span class=\"nf\">format</span><span class=\"w\"> </span><span class=\"n\">dispatcher</span><span class=\"w\"> </span><span class=\"p\">(</span><span class=\"n\">YYYY</span><span class=\"w\"> </span><span class=\"o\">|</span><span class=\"w\"> </span><span class=\"n\">YYYY</span><span class=\"o\">-</span><span class=\"n\">MM</span><span class=\"w\"> </span><span class=\"o\">|</span><span class=\"w\"> </span><span class=\"nf\">year</span><span class=\"o\">+</span><span class=\"nf\">month</span><span class=\"p\">).</span>\n\n<span class=\"mf\">4.</span><span class=\"w\"> </span><span class=\"k\">Drop</span><span class=\"w\"> </span><span class=\"k\">rows</span><span class=\"w\"> </span><span class=\"k\">where</span><span class=\"w\"> </span><span class=\"k\">value</span><span class=\"w\"> </span><span class=\"k\">is</span><span class=\"w\"> </span><span class=\"k\">null</span><span class=\"p\">.</span>\n\n<span class=\"mf\">5.</span><span class=\"w\"> </span><span class=\"n\">Flag</span><span class=\"w\"> </span><span class=\"nl\">aggregates</span><span class=\"p\">:</span><span class=\"w\"> </span><span class=\"k\">add</span><span class=\"w\"> </span><span class=\"n\">is_aggregate</span><span class=\"w\"> </span><span class=\"p\">(</span><span class=\"k\">True</span><span class=\"w\"> </span><span class=\"k\">for</span><span class=\"w\"> </span><span class=\"n\">EU27</span><span class=\"o\">/</span><span class=\"n\">Euro</span><span class=\"w\"> </span><span class=\"n\">area</span><span class=\"w\"> </span><span class=\"k\">rows</span><span class=\"p\">)</span><span class=\"w\"> </span><span class=\"ow\">and</span><span class=\"w\"> </span><span class=\"n\">per</span><span class=\"o\">-</span><span class=\"n\">dimension</span><span class=\"w\"> </span><span class=\"n\">is_total</span><span class=\"w\"> </span><span class=\"n\">columns</span><span class=\"p\">.</span>\n</code></pre></div>\n<span class=\"paragraph\">SHAPE-SPECIFIC HANDLING:</span>\n<div class=\"language-verilog highlight\"><pre><span></span><code><span class=\"o\">-</span><span class=\"w\"> </span><span class=\"nl\">platform_monthly:</span><span class=\"w\"> </span><span class=\"n\">combine</span><span class=\"w\"> </span><span class=\"n\">year</span><span class=\"w\"> </span><span class=\"p\">(</span><span class=\"kt\">time</span><span class=\"p\">)</span><span class=\"w\"> </span><span class=\"o\">+</span><span class=\"w\"> </span><span class=\"n\">month</span><span class=\"w\"> </span><span class=\"n\">into</span><span class=\"w\"> </span><span class=\"n\">a</span><span class=\"w\"> </span><span class=\"n\">single</span><span class=\"w\"> </span><span class=\"n\">timestamp</span><span class=\"p\">;</span>\n<span class=\"n\">route</span><span class=\"w\"> </span><span class=\"n\">month</span><span class=\"o\">=</span><span class=\"s\">&quot;Total&quot;</span><span class=\"w\"> </span><span class=\"n\">rows</span><span class=\"w\"> </span><span class=\"n\">to</span><span class=\"w\"> </span><span class=\"n\">a</span><span class=\"w\"> </span><span class=\"n\">separate</span><span class=\"w\"> </span><span class=\"n\">aggregates</span><span class=\"w\"> </span><span class=\"k\">table</span><span class=\"p\">.</span>\n\n<span class=\"o\">-</span><span class=\"w\"> </span><span class=\"n\">monthly</span><span class=\"w\"> </span><span class=\"n\">datasets</span><span class=\"w\"> </span><span class=\"p\">(</span><span class=\"mh\">2</span><span class=\"p\">,</span><span class=\"w\"> </span><span class=\"mh\">3</span><span class=\"p\">)</span><span class=\"o\">:</span><span class=\"w\"> </span><span class=\"n\">parse</span><span class=\"w\"> </span><span class=\"kt\">time</span><span class=\"w\"> </span><span class=\"n\">as</span><span class=\"w\"> </span><span class=\"n\">YYYY</span><span class=\"o\">-</span><span class=\"n\">MM</span><span class=\"p\">.</span>\n\n<span class=\"o\">-</span><span class=\"w\"> </span><span class=\"n\">annual</span><span class=\"w\"> </span><span class=\"n\">datasets</span><span class=\"w\"> </span><span class=\"p\">(</span><span class=\"mh\">4</span><span class=\"o\">-</span><span class=\"mh\">7</span><span class=\"p\">)</span><span class=\"o\">:</span><span class=\"w\"> </span><span class=\"n\">parse</span><span class=\"w\"> </span><span class=\"kt\">time</span><span class=\"w\"> </span><span class=\"n\">as</span><span class=\"w\"> </span><span class=\"n\">YYYY</span><span class=\"p\">.</span>\n</code></pre></div>\n<span class=\"paragraph\">PER-DATASET NORMALIZATION:</span>\n<div class=\"language-gdscript highlight\"><pre><span></span><code><span class=\"o\">-</span><span class=\"w\"> </span><span class=\"n\">Datasets</span><span class=\"w\"> </span><span class=\"mi\">3</span><span class=\"w\"> </span><span class=\"ow\">and</span><span class=\"w\"> </span><span class=\"mi\">7</span><span class=\"p\">:</span><span class=\"w\"> </span><span class=\"n\">rename</span><span class=\"w\"> </span><span class=\"n\">accomunit</span><span class=\"w\"> </span><span class=\"n\">to</span><span class=\"w\"> </span><span class=\"n\">a</span><span class=\"w\"> </span><span class=\"n\">dataset</span><span class=\"o\">-</span><span class=\"n\">specific</span><span class=\"w\"> </span><span class=\"n\">name</span>\n<span class=\"p\">(</span><span class=\"n\">occupancy_denominator</span><span class=\"w\"> </span><span class=\"n\">vs</span><span class=\"w\"> </span><span class=\"n\">capacity_unit</span><span class=\"p\">)</span><span class=\"w\"> </span><span class=\"n\">to</span><span class=\"w\"> </span><span class=\"n\">prevent</span><span class=\"w\"> </span><span class=\"n\">silent</span><span class=\"w\"> </span><span class=\"n\">mixing</span><span class=\"o\">.</span>\n\n<span class=\"o\">-</span><span class=\"w\"> </span><span class=\"n\">Datasets</span><span class=\"w\"> </span><span class=\"n\">with</span><span class=\"w\"> </span><span class=\"n\">constant</span><span class=\"w\"> </span><span class=\"n\">nace_r2</span><span class=\"w\"> </span><span class=\"o\">/</span><span class=\"w\"> </span><span class=\"n\">unit</span><span class=\"p\">:</span><span class=\"w\"> </span><span class=\"n\">keep</span><span class=\"w\"> </span><span class=\"n\">column</span><span class=\"p\">,</span><span class=\"w\"> </span><span class=\"n\">but</span><span class=\"w\"> </span><span class=\"nb\">log</span>\n<span class=\"n\">a</span><span class=\"w\"> </span><span class=\"n\">warning</span><span class=\"w\"> </span><span class=\"k\">if</span><span class=\"w\"> </span><span class=\"n\">the</span><span class=\"w\"> </span><span class=\"n\">value</span><span class=\"w\"> </span><span class=\"n\">isn</span><span class=\"s1\">&#39;t what config expects.</span>\n</code></pre></div>\n<span class=\"paragraph\">OUTPUT:</span>\n<div class=\"language-verilog highlight\"><pre><span></span><code><span class=\"o\">-</span><span class=\"w\"> </span><span class=\"n\">Long</span><span class=\"o\">-</span><span class=\"n\">format</span><span class=\"w\"> </span><span class=\"n\">Parquet</span><span class=\"p\">,</span><span class=\"w\"> </span><span class=\"n\">one</span><span class=\"w\"> </span><span class=\"n\">file</span><span class=\"w\"> </span><span class=\"n\">per</span><span class=\"w\"> </span><span class=\"n\">dataset</span><span class=\"w\"> </span><span class=\"n\">key</span><span class=\"p\">,</span><span class=\"w\"> </span><span class=\"n\">written</span><span class=\"w\"> </span><span class=\"n\">to</span><span class=\"w\"> </span><span class=\"n\">data</span><span class=\"o\">/</span><span class=\"n\">interim</span><span class=\"o\">/</span><span class=\"p\">.</span>\n\n<span class=\"o\">-</span><span class=\"w\"> </span><span class=\"nl\">Columns:</span><span class=\"w\"> </span><span class=\"n\">dimension</span><span class=\"w\"> </span><span class=\"n\">codes</span><span class=\"w\"> </span><span class=\"o\">+</span><span class=\"w\"> </span><span class=\"n\">value</span><span class=\"w\"> </span><span class=\"o\">+</span><span class=\"w\"> </span><span class=\"n\">is_aggregate</span><span class=\"w\"> </span><span class=\"o\">+</span><span class=\"w\"> </span><span class=\"n\">per</span><span class=\"o\">-</span><span class=\"n\">dim</span><span class=\"w\"> </span><span class=\"n\">is_total</span><span class=\"w\"> </span><span class=\"n\">flags</span><span class=\"p\">.</span>\n\n<span class=\"o\">-</span><span class=\"w\"> </span><span class=\"n\">File</span><span class=\"w\"> </span><span class=\"n\">metadata</span><span class=\"w\"> </span><span class=\"p\">(</span><span class=\"n\">unit</span><span class=\"p\">,</span><span class=\"w\"> </span><span class=\"n\">single</span><span class=\"w\"> </span><span class=\"n\">nace_r2</span><span class=\"w\"> </span><span class=\"k\">if</span><span class=\"w\"> </span><span class=\"n\">applicable</span><span class=\"p\">)</span><span class=\"w\"> </span><span class=\"n\">saved</span><span class=\"w\"> </span><span class=\"n\">as</span><span class=\"w\"> </span><span class=\"n\">a</span><span class=\"w\"> </span><span class=\"n\">sidecar</span><span class=\"w\"> </span><span class=\"n\">JSON</span><span class=\"p\">.</span>\n</code></pre></div></span>"
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "roZW",
+      "code_hash": null,
+      "outputs": [
+        {
+          "type": "data",
+          "data": {
+            "text/plain": ""
+          }
+        }
+      ],
+      "console": []
+    },
+    {
+      "id": "lFmZ",
+      "code_hash": null,
+      "outputs": [],
+      "console": []
+    }
+  ]
+}

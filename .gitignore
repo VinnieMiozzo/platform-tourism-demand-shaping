@@ -41,6 +41,7 @@ logs/
 data/raw/*
 data/interim/*
 data/processed/*
+data/marts/*
 !data/raw/.gitkeep
 !data/interim/.gitkeep
 !data/processed/.gitkeep
@@ -88,3 +89,26 @@ reports/tables/*
 tmp/
 temp/
 *.tmp
+
+# marimo runtime/session state
+.marimo/
+**/__marimo__/*
+
+# Python caches
+__pycache__/
+*.py[cod]
+.ipynb_checkpoints/
+
+# Virtual environments
+.venv/
+venv/
+
+# Environment files
+.env
+.env.*
+
+# Local data / outputs, if applicable
+data/raw/
+data/interim/
+outputs/
+reports/figures/
