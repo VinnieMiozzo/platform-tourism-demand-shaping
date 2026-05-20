@@ -41,6 +41,7 @@ logs/
 data/raw/*
 data/interim/*
 data/processed/*
+data/marts/*
 !data/raw/.gitkeep
 !data/interim/.gitkeep
 !data/processed/.gitkeep
