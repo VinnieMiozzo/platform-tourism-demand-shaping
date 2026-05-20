@@ -2,10 +2,9 @@
 
 import argparse
 
+from platform_tourism.clean import clean_all
 from platform_tourism.ingest import ingest_all
 from platform_tourism.logger import setup_logging
-
-# from platform_tourism.clean import clean_all   # add when ready
 
 
 def main() -> None:
@@ -26,7 +25,7 @@ def main() -> None:
 
     if not args.skip_ingest:
         ingest_all(force=args.force)
-    # clean_all()
+    clean_all()
 
 
 if __name__ == "__main__":

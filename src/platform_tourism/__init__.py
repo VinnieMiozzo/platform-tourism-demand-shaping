@@ -9,6 +9,7 @@ Modules:
 
 __version__ = "0.1.0"
 
+from platform_tourism.clean import clean_all
 from platform_tourism.config import DATASETS, ENABLED_DATASETS
 from platform_tourism.ingest import ingest_all
 
