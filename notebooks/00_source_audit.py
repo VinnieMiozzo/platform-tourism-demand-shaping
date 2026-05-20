@@ -116,7 +116,37 @@ def _(flatten_jsonstat, json, out_dir, pd, raw_dir):
 
 @app.cell
 def _(combined):
+    combined["dataset_code"].unique()
+    return
+
+
+@app.cell
+def _(combined):
     combined[combined["dataset_code"] == "TOUR_OCC_NINAT"]
+    return
+
+
+@app.cell
+def _(combined):
+    combined[combined["dataset_code"] == "TOUR_OCC_NIN2"]
+    return
+
+
+@app.cell
+def _(combined):
+    combined[combined["dataset_code"] == "TOUR_OCC_NIM"]
+    return
+
+
+@app.cell
+def _(combined):
+    combined[combined["dataset_code"] == "TOUR_CE_OMN12"]
+    return
+
+
+@app.cell
+def _(combined):
+    combined[combined["dataset_code"] == "TOUR_CE_OMR"]
     return
 
 
