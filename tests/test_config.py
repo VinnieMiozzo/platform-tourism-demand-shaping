@@ -77,3 +77,10 @@ def test_frequency_is_recognized(key):
         f"{key} has unrecognized frequency '{DATASETS[key]['frequency']}'; "
         f"expected one of {valid}"
     )
+
+
+def test_platform_monthly_has_nights_indicator():
+    indicators = DATASETS["platform_monthly"]["main_indicators"]
+    assert any("night" in name.lower() for name in indicators.values()), (
+        f"platform_monthly has no nights-related indicator: {indicators}"
+    )
