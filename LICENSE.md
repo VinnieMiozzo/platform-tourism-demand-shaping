@@ -21,4 +21,5 @@ their original providers. This license does not grant rights over third-party da
 For commercial or professional use, contact:
 
 Vinicius Miozzo
-[add email or website contact page]
+kmiozzo.vinicius@gmail.com
+
