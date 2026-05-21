@@ -1,0 +1,276 @@
+% styles/vm-common.sty
+% Shared visual language for VM LaTeX reports.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/vm-common}[2026/05/20 VM common report style]
+
+\RequirePackage[utf8]{inputenc}
+\RequirePackage[T1]{fontenc}
+\RequirePackage{lmodern}
+\RequirePackage{microtype}
+\RequirePackage{graphicx}
+\RequirePackage{xcolor}
+\RequirePackage{booktabs}
+\RequirePackage{array}
+\RequirePackage{tabularx}
+\RequirePackage{longtable}
+\RequirePackage{enumitem}
+\RequirePackage{amsmath}
+\RequirePackage{amssymb}
+\RequirePackage{siunitx}
+\RequirePackage{caption}
+\RequirePackage{subcaption}
+\RequirePackage{tcolorbox}
+\RequirePackage{hyperref}
+\RequirePackage{lastpage}
+\RequirePackage{fancyhdr}
+\RequirePackage{etoolbox}
+\RequirePackage{ifthen}
+
+% ---------------------------------------------------------
+% Website palette
+% ---------------------------------------------------------
+\definecolor{VMDeepTeal}{HTML}{36464B}
+\definecolor{VMDarkSlate}{HTML}{272B2B}
+\definecolor{VMTan}{HTML}{B99A76}
+\definecolor{VMBeige}{HTML}{DAC4B0}
+\definecolor{VMCream}{HTML}{F3E9DB}
+\definecolor{VMSoftCream}{HTML}{FAF6EF}
+\definecolor{VMMutedText}{HTML}{657071}
+\definecolor{VMLightGrid}{HTML}{F0E9E1}
+\definecolor{VMWhite}{HTML}{FFFFFF}
+
+\hypersetup{
+  colorlinks=true,
+  linkcolor=VMDeepTeal,
+  urlcolor=VMDeepTeal,
+  citecolor=VMDeepTeal,
+  pdfborder={0 0 0}
+}
+
+\sisetup{
+  group-separator={,},
+  group-minimum-digits=4
+}
+
+\setlength{\parindent}{0pt}
+\setlength{\parskip}{6pt}
+\setlist[itemize]{topsep=3pt,itemsep=2pt,leftmargin=16pt}
+\setlist[enumerate]{topsep=3pt,itemsep=2pt,leftmargin=18pt}
+
+\addtokomafont{section}{\color{VMDarkSlate}}
+\addtokomafont{subsection}{\color{VMDeepTeal}}
+\addtokomafont{subsubsection}{\color{VMDarkSlate}}
+
+\captionsetup{
+  labelfont={bf,color=VMDeepTeal},
+  textfont={small,color=VMDarkSlate},
+  font=small
+}
+
+% ---------------------------------------------------------
+% Metadata
+% ---------------------------------------------------------
+\newcommand{\VMTitle}{Untitled Report}
+\newcommand{\VMSubtitle}{}
+\newcommand{\VMDocumentType}{Report}
+\newcommand{\VMAuthor}{Vinicius Miozzo}
+\newcommand{\VMDate}{\today}
+\newcommand{\VMVersion}{0.1}
+\newcommand{\VMClassification}{Internal}
+\newcommand{\VMClient}{}
+\newcommand{\VMProject}{}
+\newcommand{\VMReportHeader}{\VMDocumentType}
+
+\newcommand{\reporttitle}[1]{\renewcommand{\VMTitle}{#1}}
+\newcommand{\reportsubtitle}[1]{\renewcommand{\VMSubtitle}{#1}}
+\newcommand{\documenttype}[1]{\renewcommand{\VMDocumentType}{#1}\renewcommand{\VMReportHeader}{#1}}
+\newcommand{\reportauthor}[1]{\renewcommand{\VMAuthor}{#1}}
+\newcommand{\reportdate}[1]{\renewcommand{\VMDate}{#1}}
+\newcommand{\reportversion}[1]{\renewcommand{\VMVersion}{#1}}
+\newcommand{\classification}[1]{\renewcommand{\VMClassification}{#1}}
+\newcommand{\clientarea}[1]{\renewcommand{\VMClient}{#1}}
+\newcommand{\projectname}[1]{\renewcommand{\VMProject}{#1}}
+
+% ---------------------------------------------------------
+% Header and footer
+% ---------------------------------------------------------
+\pagestyle{fancy}
+\fancyhf{}
+\lhead{\small\color{VMMutedText}\VMReportHeader}
+\rhead{\small\color{VMMutedText}\thepage/\pageref{LastPage}}
+\renewcommand{\headrulewidth}{0.3pt}
+\renewcommand{\headrule}{\hbox to\headwidth{\color{VMLightGrid}\leaders\hrule height \headrulewidth\hfill}}
+
+% ---------------------------------------------------------
+% Title page
+% ---------------------------------------------------------
+\newcommand{\makereporttitle}{
+\begin{titlepage}
+  \pagecolor{VMSoftCream}
+  \vspace*{16mm}
+
+  {\Huge\bfseries\color{VMDarkSlate}\VMTitle\par}
+  \vspace{4mm}
+  {\Large\color{VMDeepTeal}\VMSubtitle\par}
+
+  \vspace{12mm}
+
+  \begin{tabularx}{0.78\linewidth}{>{\bfseries\color{VMMutedText}}lX}
+    Document type & \VMDocumentType \\
+    Author & \VMAuthor \\
+    Date & \VMDate \\
+    Version & \VMVersion \\
+    Classification & \VMClassification \\
+    Client / Area & \VMClient \\
+    Project & \VMProject \\
+  \end{tabularx}
+
+  \vfill
+
+  \begin{tcolorbox}[
+    colback=VMWhite,
+    colframe=VMBeige,
+    boxrule=0.6pt,
+    arc=1.5mm,
+    left=4mm,
+    right=4mm,
+    top=3mm,
+    bottom=3mm
+  ]
+  \textbf{Draft note.} This report is generated from the marimo analytical notebook.
+  Replace placeholders after the final notebook run and figure export.
+  \end{tcolorbox}
+
+  \nopagecolor
+\end{titlepage}
+}
+
+% ---------------------------------------------------------
+% Reusable content blocks
+% ---------------------------------------------------------
+\newtcolorbox{executivesummary}{
+  colback=VMSoftCream,
+  colframe=VMTan,
+  boxrule=0.7pt,
+  arc=1.5mm,
+  title=\textbf{Executive Summary},
+  coltitle=VMDarkSlate,
+  left=4mm,
+  right=4mm,
+  top=2mm,
+  bottom=2mm
+}
+
+\newtcolorbox{finding}[1][Finding]{
+  colback=VMWhite,
+  colframe=VMTan,
+  boxrule=0.6pt,
+  arc=1.5mm,
+  title=\textbf{#1},
+  coltitle=VMDarkSlate,
+  left=4mm,
+  right=4mm,
+  top=2mm,
+  bottom=2mm
+}
+
+\newtcolorbox{methodnote}[1][Method Note]{
+  colback=VMWhite,
+  colframe=VMDeepTeal,
+  boxrule=0.6pt,
+  arc=1.5mm,
+  title=\textbf{#1},
+  coltitle=VMDeepTeal,
+  left=4mm,
+  right=4mm,
+  top=2mm,
+  bottom=2mm
+}
+
+\newtcolorbox{qualitycheck}[1][Quality Check]{
+  colback=VMSoftCream,
+  colframe=VMDeepTeal,
+  boxrule=0.6pt,
+  arc=1.5mm,
+  title=\textbf{#1},
+  coltitle=VMDeepTeal,
+  left=4mm,
+  right=4mm,
+  top=2mm,
+  bottom=2mm
+}
+
+\newtcolorbox{recommendation}[1][Recommendation]{
+  colback=VMSoftCream,
+  colframe=VMTan,
+  boxrule=0.7pt,
+  arc=1.5mm,
+  title=\textbf{#1},
+  coltitle=VMDarkSlate,
+  left=4mm,
+  right=4mm,
+  top=2mm,
+  bottom=2mm
+}
+
+\newcommand{\placeholder}[1]{
+  \begin{tcolorbox}[
+    colback=VMWhite,
+    colframe=VMBeige,
+    boxrule=0.4pt,
+    arc=1.5mm,
+    left=3mm,
+    right=3mm,
+    top=2mm,
+    bottom=2mm
+  ]
+  \textbf{\color{VMTan}To add:} #1
+  \end{tcolorbox}
+}
+
+\newcommand{\metriccard}[2]{
+  \begin{tcolorbox}[
+    colback=VMWhite,
+    colframe=VMBeige,
+    boxrule=0.5pt,
+    arc=1.5mm,
+    left=3mm,
+    right=3mm,
+    top=2mm,
+    bottom=2mm
+  ]
+  {\small\color{VMMutedText}#1}\\
+  {\Large\bfseries\color{VMDeepTeal}#2}
+  \end{tcolorbox}
+}
+
+% ---------------------------------------------------------
+% Safe figure helper
+% ---------------------------------------------------------
+\newcommand{\maybegraphics}[2][0.95\linewidth]{
+  \IfFileExists{#2}{
+    \includegraphics[width=#1]{#2}
+  }{
+    \begin{tcolorbox}[
+      colback=VMSoftCream,
+      colframe=VMBeige,
+      boxrule=0.6pt,
+      width=#1,
+      arc=1.5mm
+    ]
+    Missing figure: \texttt{#2}
+    \end{tcolorbox}
+  }
+}
+
+\newcommand{\reportfigure}[4][0.95\linewidth]{
+\begin{figure}[htbp]
+  \centering
+  \maybegraphics[#1]{../figures/#2.pdf}
+  \caption{#3}
+  \label{#4}
+\end{figure}
+}
+
+\endinput

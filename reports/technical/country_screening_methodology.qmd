@@ -1,0 +1,531 @@
+---
+title: "Country Screening Methodology"
+subtitle: "Technical audit trail for Phase 1 of the Platform Tourism Demand Shaping project"
+author: "Vinicius Miozzo"
+date: "2026-05-20"
+format:
+  html:
+    toc: true
+    toc-depth: 3
+    number-sections: true
+    code-fold: true
+    code-tools: true
+    df-print: paged
+execute:
+  echo: true
+  eval: false
+  warning: false
+  message: false
+---
+
+# Purpose
+
+This document is the technical methodology report for **Phase 1 — Country Screening** of the Platform Tourism Demand Shaping project.
+
+The business report answers the stakeholder question:
+
+> Which European countries warrant deeper regional and city-level investigation for shoulder-season platform-tourism campaigns?
+
+This technical methodology explains how the answer was produced, tested, bounded, and prepared for the next phase.
+
+The analysis is deliberately framed as a **screening layer**. It does not allocate campaign budget. It identifies where additional regional and city-level data acquisition is justified.
+
+# Deliverable Relationship
+
+The project now has three main analytical surfaces:
+
+| Deliverable | Format | Audience | Purpose |
+|---|---|---|---|
+| Business report | LaTeX PDF | Strategy / marketing stakeholder | Decision memo and shortlist |
+| Technical methodology | Quarto HTML | Technical reviewer / interviewer | Full analytical audit trail |
+| marimo notebook | Python notebook | Analyst / reviewer | Reproducible workspace and figure export |
+
+The LaTeX report should stay business-facing. This Quarto report should carry the technical reasoning, formulas, validation logic, and reproducibility details.
+
+# Phase 1 Decision
+
+## Business decision
+
+This analysis helps a destination marketing or accommodation portfolio team decide **which European countries should receive deeper regional and city-level analysis** by using Eurostat platform-tourism data to evaluate demand scale, recent growth, and seasonality concentration.
+
+## Not the final decision
+
+This analysis does **not** answer:
+
+- which cities should receive marketing budget;
+- which months should be targeted in each city;
+- which campaign creative or pricing action should be used;
+- expected causal uplift;
+- expected return on investment.
+
+Those decisions require regional and city-level data in later phases.
+
+# Source Data
+
+## Primary source
+
+The country-screening analysis uses Eurostat collaborative-economy short-stay accommodation data.
+
+Primary analytical grain:
+
+```text
+country-month
+```
+
+Primary measure:
+
+```text
+nights spent through online collaborative-economy platforms
+```
+
+The source is appropriate for market-prioritization because it is official, multi-country, and structured around comparable tourism demand measures. It is not a transaction-level dataset and should not be interpreted as user-level behavioral data.
+
+## Derived marts
+
+The notebook consumes two derived marts produced by the project pipeline.
+
+| Mart | Grain | Purpose |
+|---|---|---|
+| `platform_country_month.parquet` | country-month | Long country-month panel for seasonality and diagnostics |
+| `seasonality_components.parquet` | country | Precomputed country-level inputs to the opportunity score |
+
+The marts are treated as the analytical contract between the pipeline and the notebook. The notebook should not perform raw ingestion logic.
+
+# Data Preparation
+
+The pipeline transforms raw Eurostat extracts into analysis-ready marts through these steps:
+
+1. Standardize dimension names from verbose labels to compact codes.
+2. Filter out aggregate European geographies to avoid double counting.
+3. Remove month-total rows where monthly seasonality is required.
+4. Retain the total-residence view for the main country score.
+5. Restrict seasonality calculations to complete years.
+6. Derive seasonal labels:
+   - peak: June, July, August;
+   - shoulder: April, May, September, October;
+   - off-season: November through March.
+7. Produce country-level component features for scoring.
+
+# SQL Model
+
+The project should expose the country-screening logic through a simple analytical model.
+
+| Layer | Object | Grain | Purpose |
+|---|---|---|---|
+| Staging | `stg_platform_country_month` | country-month | Clean Eurostat country-month data |
+| Dimension | `dim_country` | country | Country codes and labels |
+| Dimension | `dim_time` | month | Year, month, season, complete-year flags |
+| Fact | `fact_platform_nights_country` | country-month | Platform nights by country and month |
+| Mart | `mart_country_components` | country | Demand, growth, and seasonality inputs |
+| Mart | `mart_country_opportunity` | country | Final score and rank |
+
+The SQL layer should make the analytical grain explicit and reviewable. Python should handle figure generation, scoring diagnostics, and sensitivity analysis.
+
+# Metric Definitions
+
+## Demand level
+
+Demand level captures whether a country has enough platform-tourism volume for an intervention to matter commercially.
+
+Let:
+
+```text
+D_i = mean annual platform nights for country i across the latest scoring window
+```
+
+A log transform is applied before min-max scaling:
+
+```text
+L_i =
+[log(1 + D_i) - min_j log(1 + D_j)]
+/
+[max_j log(1 + D_j) - min_j log(1 + D_j)]
+```
+
+### Rationale
+
+France, Spain, and Italy are much larger than the rest of the panel. Without a log transform, the largest markets would dominate the scale component and compress most countries into a narrow lower range. The log transform preserves the ranking while reducing extreme scale dominance.
+
+## Growth
+
+Growth captures whether the market is expanding.
+
+Let:
+
+```text
+G_raw_i =
+latest_complete_year_nights_i / prior_baseline_nights_i - 1
+```
+
+Then normalize:
+
+```text
+G_i =
+[G_raw_i - min_j G_raw_j]
+/
+[max_j G_raw_j - min_j G_raw_j]
+```
+
+### Rationale
+
+Growth is useful but must be interpreted carefully. Small markets can show high percentage growth from a low base. For this reason, growth should not dominate the final score unless the business case explicitly prioritizes early-stage market entry.
+
+## Seasonality concentration
+
+Seasonality concentration captures whether demand is strongly concentrated in peak summer months.
+
+Let:
+
+```text
+C_raw_i = peak_nights_i / annual_nights_i
+```
+
+where peak months are June, July, and August.
+
+Normalize:
+
+```text
+C_i =
+[C_raw_i - min_j C_raw_j]
+/
+[max_j C_raw_j - min_j C_raw_j]
+```
+
+### Rationale
+
+A high peak share indicates structural summer concentration. This can create theoretical room for shoulder-season demand shaping, especially where shoulder months are below the peak but not at winter-trough levels.
+
+The analysis uses peak concentration as a signal of **redistribution potential**, not as proof that redistribution is achievable.
+
+# Composite Country Score
+
+The default country opportunity score is:
+
+```text
+S_i =
+0.45 * L_i
++ 0.30 * G_i
++ 0.25 * C_i
+```
+
+Where:
+
+| Component | Weight | Interpretation |
+|---|---:|---|
+| Demand level | 0.45 | Commercial scale |
+| Growth | 0.30 | Market expansion |
+| Seasonality concentration | 0.25 | Theoretical shoulder-season opportunity |
+
+## Why demand has the largest weight
+
+Campaign and analysis budgets have fixed costs. A large market can produce commercially meaningful results even when the proportional shift is modest. Smaller countries need stronger growth or seasonality signals to justify the same level of follow-up effort.
+
+## Score interpretation
+
+The score is:
+
+- ordinal;
+- directional;
+- suitable for prioritization;
+- useful for data-acquisition decisions.
+
+The score is not:
+
+- a causal estimate;
+- a forecast;
+- an uplift model;
+- an ROI model;
+- a campaign deployment recommendation.
+
+# Analytical Outputs
+
+## Demand scale
+
+The demand-scale chart identifies which countries dominate recent annualized platform nights.
+
+Expected interpretation:
+
+- France, Spain, and Italy dominate the panel by absolute demand.
+- The next tier includes countries such as Germany, Greece, Portugal, Poland, and Croatia.
+- Scale-led countries need regional disaggregation because national totals can hide very different local tourism patterns.
+
+## Seasonality heatmap
+
+The seasonality heatmap normalizes each country to its own annual total.
+
+The heatmap answers:
+
+> When does each country receive its platform-tourism demand?
+
+It does not answer:
+
+> How large is each country in absolute terms?
+
+Expected interpretation:
+
+- Mediterranean markets show the strongest summer concentration.
+- Alpine markets may show bimodal patterns.
+- Northern and central markets tend to be flatter.
+
+## Growth versus demand
+
+The growth-versus-demand scatter separates:
+
+- large, mature markets;
+- smaller high-growth markets;
+- countries with both scale and expansion.
+
+The key business reading is that high-growth small markets should be treated as watchlist markets unless other components support immediate follow-up.
+
+## Ranking and decomposition
+
+The ranking chart provides the shortlist. The component-decomposition chart explains why each country ranks highly.
+
+This distinction matters because different mechanisms require different follow-up designs:
+
+| Mechanism | Example | Phase 2 implication |
+|---|---|---|
+| Scale-led | France, Spain | Decompose regions and cities |
+| Seasonality-led | Greece, Croatia | Test destination-month shoulder gaps |
+| Mixed | Italy | Study both region structure and city-level seasonality |
+| Growth-led | Malta, Norway, Sweden | Monitor, but avoid overcommitting without scale |
+
+# Sensitivity Analysis
+
+The weight choices are judgmental. Sensitivity analysis tests whether the recommendation survives reasonable alternative assumptions.
+
+| Scenario | Demand | Growth | Seasonality | Purpose |
+|---|---:|---:|---:|---|
+| Default | 0.45 | 0.30 | 0.25 | Main business case |
+| Balanced | 0.40 | 0.30 | 0.30 | Slightly more equal treatment |
+| Scale-led | 0.60 | 0.25 | 0.15 | Tests a commercially conservative view |
+| Growth-led | 0.25 | 0.55 | 0.20 | Tests early-stage expansion bias |
+| Seasonality-led | 0.25 | 0.25 | 0.50 | Tests demand-shaping emphasis |
+
+## Validation logic
+
+The goal is not to prove that exact rank order is stable. The goal is to test whether the **top-five shortlist** is stable enough to justify Phase 2 data acquisition.
+
+If the same countries remain in the shortlist under most scenarios, the recommendation is robust for a screening decision.
+
+If only the internal order changes, the business recommendation should emphasize the set rather than the exact rank.
+
+If a country enters only under one scenario, it should be treated as a scenario-dependent candidate or watchlist item.
+
+# Quality Checks
+
+The country-screening release should pass the following checks.
+
+| Check | Expected result |
+|---|---|
+| Required columns exist in country-month mart | Pass |
+| Required columns exist in component mart | Pass |
+| No null values in scoring rows | Pass |
+| Country coverage matches across marts | Pass |
+| Country-year coverage is complete for scoring years | Pass |
+| Duplicate country-month keys after filtering | Zero |
+| Score components within 0–1 bounds | Pass |
+| Small-base growth outliers identified | Pass |
+| Sensitivity table generated | Pass |
+| Top-five stability assessed | Pass |
+
+# Statistical Rationale
+
+## Why this is not a predictive model
+
+The analysis is not trying to predict future demand. It is trying to prioritize follow-up analysis under imperfect information.
+
+A predictive model would require:
+
+- more granular historical data;
+- future-looking covariates;
+- event and weather controls;
+- supply constraints;
+- validation against future periods.
+
+The current score is a **multi-criteria decision model**, not a forecast.
+
+## Why min-max normalization is acceptable here
+
+Min-max normalization is appropriate for this Phase 1 use case because:
+
+- the goal is relative ranking within a fixed panel;
+- the score is not intended to be transferred outside the panel without recalibration;
+- the inputs are interpretable;
+- the output is ordinal rather than absolute.
+
+The limitation is that min-max scaling is sensitive to outliers. This is partially mitigated by:
+
+- log-scaling the demand component;
+- interpreting high-growth small markets as watchlist cases;
+- running sensitivity analysis.
+
+## Why not use z-scores
+
+Z-scores would make the components less intuitive for a business scoring system. They can also produce negative component values, which complicates explanation. Because the use case is a prioritization score rather than statistical inference, 0–1 normalized components are easier to explain and audit.
+
+## Why not use machine learning
+
+Machine learning is not appropriate at this stage because the current target is not observed. There is no direct label for "successful shoulder-season campaign investment." Without a historical campaign-outcome target, a supervised model would create false precision.
+
+# Limitations
+
+## Country-level granularity
+
+Country-level data hides destination-level differences. A high country score may be driven by a few cities or regions, or it may reflect a broad national pattern. These two cases require different strategies.
+
+Examples:
+
+- Greece may average island tourism with Athens.
+- Spain may average coastal destinations with Madrid and Barcelona.
+- France may average Paris, Riviera, mountain regions, and rural tourism.
+- Italy may average cultural cities with coastal destinations.
+- Croatia may be dominated by a smaller set of Adriatic destinations.
+
+## Source coverage
+
+Eurostat platform-tourism data does not cover all private rentals or all direct booking channels. It is best interpreted as a comparable official panel of platform-mediated short-stay demand.
+
+## Missing business constraints
+
+The country score does not yet include:
+
+- supply availability;
+- regulation;
+- campaign cost;
+- pricing flexibility;
+- competitive intensity;
+- channel mix;
+- historical campaign response;
+- property-level profitability.
+
+## Interpretation boundary
+
+The correct Phase 1 interpretation is:
+
+> These countries justify deeper data acquisition.
+
+The incorrect interpretation is:
+
+> These countries should receive campaign budget.
+
+# Phase 2 Design
+
+Phase 2 moves from country screening to regional prioritization.
+
+## Phase 2 decision
+
+## Phase 2 Scope Rationale
+
+Phase 1 evaluates the full available country panel. Phase 2 intentionally narrows the analysis to the top-ranked countries from the Phase 1 score.
+
+This is a methodological and delivery-scope choice. Regional and city-level analysis introduces new data sources, finer geographic joins, additional validation requirements, and local-market interpretation. Running that process across every European country would make the project broader but not necessarily stronger as a portfolio release.
+
+The analytical objective is therefore to test the end-to-end decision framework on a focused, high-signal subset. Countries outside the shortlist remain part of the Phase 1 benchmark and can be added in later releases if the framework is expanded.
+
+> Which regions inside EL, FR, IT, HR, and ES deserve city-level data acquisition?
+
+## Planned regional score
+
+```text
+region_score =
+0.30 * regional_platform_scale
++ 0.20 * regional_growth
++ 0.25 * peak_to_shoulder_gap
++ 0.15 * share_of_country_platform_nights
++ 0.10 * platform_vs_hotel_gap
+```
+
+## Planned regional outputs
+
+| Output | Purpose |
+|---|---|
+| Regional demand ranking | Shows where national demand is concentrated |
+| Regional seasonality heatmap | Shows intra-country seasonality variation |
+| Country-to-region decomposition | Tests whether country signal is broad or localized |
+| Platform-versus-hotel comparison | Tests whether platform demand behaves differently from traditional accommodation |
+| Regional shortlist | Selects cities/destinations for Phase 3 |
+
+# Phase 3 Design
+
+Phase 3 moves from regional screening to city investment scoring.
+
+## Phase 3 decision
+
+> Which city-months have enough demand, available supply, pricing opportunity, and validation support to justify campaign or pricing investment?
+
+## Planned city score
+
+```text
+city_investment_score =
+0.25 * demand_proxy
++ 0.20 * shoulder_gap
++ 0.20 * supply_readiness
++ 0.15 * price_opportunity
++ 0.10 * regional_alignment
++ 0.10 * validation_support
+- risk_penalty
+```
+
+## Planned city-level data
+
+| Data | Source | Use |
+|---|---|---|
+| Listings | Inside Airbnb | Supply depth, host concentration, property type |
+| Calendar | Inside Airbnb | Availability and listed price |
+| Reviews | Inside Airbnb | Demand proxy and seasonality proxy |
+| Hotel nights | Eurostat city/regional tourism | Official benchmark |
+| Regulation flags | Manual structured input | Feasibility and risk penalty |
+
+# Reproducibility
+
+## Environment
+
+```bash
+uv sync
+```
+
+## Pipeline
+
+```bash
+uv run python main.py
+```
+
+## Notebook
+
+```bash
+uv run marimo edit notebooks/02_country_screening.py
+```
+
+## Technical methodology
+
+```bash
+quarto render reports/technical/country_screening_methodology.qmd
+```
+
+## Business report
+
+```bash
+latexmk -pdf reports/business/country_screening_business.tex
+```
+
+# Versioning
+
+This methodology belongs to:
+
+```text
+v0.2.0 — Country Screening Release
+```
+
+The next release should be:
+
+```text
+v0.3.0 — Regional Prioritization Release
+```
+
+# Technical Conclusion
+
+The Phase 1 model is suitable for country-level screening because it combines commercially meaningful scale, recent growth, and seasonality concentration into an explainable ranking and validates the shortlist under alternative weights.
+
+It is not suitable for final campaign deployment because the analytical grain is too coarse. The next technical release should rerun the same decision logic at regional level and then use city-level data to construct an investable city-month recommendation.
+

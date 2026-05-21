@@ -1,0 +1,37 @@
+% styles/vm-technical.sty
+% Technical methodology report variant.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/vm-technical}[2026/05/20 VM technical report style]
+
+\RequirePackage{mathtools}
+
+\newtcolorbox{datadefinition}[1][Data Definition]{
+  colback=VMWhite,
+  colframe=VMDeepTeal,
+  boxrule=0.6pt,
+  arc=1.5mm,
+  title=\textbf{#1},
+  coltitle=VMDeepTeal,
+  left=4mm,
+  right=4mm,
+  top=2mm,
+  bottom=2mm
+}
+
+\newtcolorbox{assumption}[1][Assumption]{
+  colback=VMSoftCream,
+  colframe=VMTan,
+  boxrule=0.6pt,
+  arc=1.5mm,
+  title=\textbf{#1},
+  coltitle=VMDarkSlate,
+  left=4mm,
+  right=4mm,
+  top=2mm,
+  bottom=2mm
+}
+
+\newcommand{\codevar}[1]{\texttt{#1}}
+
+\endinput

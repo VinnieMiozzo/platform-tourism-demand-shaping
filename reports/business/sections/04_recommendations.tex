@@ -1,0 +1,54 @@
+\section{Recommendation and Next Release}
+
+\begin{recommendation}
+Proceed to Phase 2 with a focused regional analysis of \countrycode{EL}, \countrycode{FR}, \countrycode{IT}, \countrycode{HR}, and \countrycode{ES}. The immediate business action is not to launch campaigns, but to acquire and model regional data for these countries so that city-level candidates can be selected with stronger evidence.
+\end{recommendation}
+
+\subsection{Recommended country shortlist}
+
+\begin{table}[htbp]
+\centering
+\small
+\caption{Recommended Phase 2 country shortlist}
+\begin{tabularx}{\textwidth}{@{}L{18mm}L{34mm}Y Y@{}}
+\toprule
+\tableheader Country & Primary reason & Phase 2 question & Follow-up implication \\
+\midrule
+\countrycode{EL} & Seasonality-led & Is the opportunity concentrated in islands, Athens, or both? & Prioritize destination-month diagnosis. \\
+\countrycode{FR} & Scale-led & Which regions show meaningful shoulder-season gaps inside a very large market? & Prioritize regional decomposition. \\
+\countrycode{IT} & Mixed & Do cultural cities and coastal destinations show different patterns? & Run both regional and destination-type analysis. \\
+\countrycode{HR} & Seasonality-led & Is the national signal driven by a few Adriatic destinations? & Test concentration across coastal destinations. \\
+\countrycode{ES} & Scale-led & Which subregions break the national average pattern? & Compare city, coastal, and island markets. \\
+\bottomrule
+\end{tabularx}
+\end{table}
+
+\subsection{Phase 2 design}
+
+Phase 2 should move from country-month to region-month analysis. The recommended regional score should combine:
+
+\begin{itemize}
+  \item regional platform scale;
+  \item regional growth;
+  \item peak-to-shoulder gap;
+  \item share of country platform nights;
+  \item platform-versus-hotel gap where traditional accommodation data is available.
+\end{itemize}
+
+\begin{methodnote}
+A practical Phase 2 score is: \(0.30\times\text{regional scale} + 0.20\times\text{growth} + 0.25\times\text{peak-to-shoulder gap} + 0.15\times\text{share of country nights} + 0.10\times\text{platform-hotel gap}\).
+\end{methodnote}
+
+\subsection{Final target}
+
+The final project should produce a city-month investment score that combines demand proxy, shoulder gap, supply readiness, price opportunity, regional alignment, validation support, and risk penalties. The final recommendation should answer which city-months deserve campaign or pricing investment.
+
+\begin{nextsteps}
+\begin{enumerate}
+  \item Close the country-screening release as \texttt{v0.2.0}.
+  \item Add regional Eurostat platform-tourism and hotel-accommodation data.
+  \item Build \texttt{03\_region\_screening.py} and regional marts.
+  \item Produce a regional shortlist for city-level data acquisition.
+  \item Start Phase 3 only after the regional shortlist is stable.
+\end{enumerate}
+\end{nextsteps}

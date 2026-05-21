@@ -1,0 +1,71 @@
+\makeatletter
+\def\input@path{{./styles/}{../styles/}{../../styles/}}
+\makeatother
+
+\documentclass[11pt,a4paper]{article}
+
+% ---------------------------------------------------------
+% VMiozzo LaTeX Library
+% ---------------------------------------------------------
+\usepackage{vmiozzo-core}
+\usepackage[subtle]{vmiozzo-artnouveau}
+\usepackage{vmiozzo-business}
+\usepackage{vmiozzo-tables}
+\usepackage{vmiozzo-figures}
+\usepackage{vmiozzo-code}
+\usepackage{amsmath}
+
+% ---------------------------------------------------------
+% Project paths
+% ---------------------------------------------------------
+\graphicspath{{../figures/}{../../figures/}{figures/}}
+
+% ---------------------------------------------------------
+% Metadata
+% ---------------------------------------------------------
+\title{Phase 1 --- Country Screening for Shoulder-Season Platform Tourism}
+\subtitle{A business decision memo identifying which European markets justify regional and city-level follow-up analysis}
+\author{Vinicius Miozzo}
+\date{May 2026}
+\doctype{Business Report}
+\client{Portfolio / Market Analytics}
+\project{Platform Tourism Demand Shaping}
+\version{0.2.0}
+\classification{Internal}
+
+% ---------------------------------------------------------
+% Report helpers
+% ---------------------------------------------------------
+\newcommand{\reportfigure}[3]{%
+  \begin{figure}[htbp]
+    \centering
+    \IfFileExists{../figures/#1}{%
+      \includegraphics[width=#2]{#1}%
+    }{%
+      \IfFileExists{../../figures/#1}{%
+        \includegraphics[width=#2]{#1}%
+      }{%
+        \begin{vmibox}{Figure placeholder}
+          \texttt{\detokenize{#1}} was not found in \texttt{../figures/}. Re-run the marimo notebook export or check the figure path.
+        \end{vmibox}%
+      }%
+    }%
+    \caption{#3}
+  \end{figure}%
+}
+
+\newcommand{\countrycode}[1]{\statuspill{#1}}
+
+\begin{document}
+\maketitlepage
+\tableofcontents
+\clearpage
+
+\input{sections/01_executive_summary}
+\input{sections/02_context}
+\input{sections/03_findings}
+\input{sections/04_recommendations}
+\input{sections/05_appendix}
+
+\end{document}
+

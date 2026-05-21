@@ -1,0 +1,29 @@
+% styles/vm-code.sty
+% Code listing support.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/vm-code}[2026/05/20 VM code listing style]
+
+\RequirePackage{listings}
+
+\lstdefinestyle{vmcode}{
+  basicstyle=\ttfamily\small,
+  keywordstyle=\bfseries\color{VMDeepTeal},
+  commentstyle=\itshape\color{VMMutedText},
+  stringstyle=\color{VMTan},
+  numbers=left,
+  numberstyle=\tiny\color{VMMutedText},
+  stepnumber=1,
+  numbersep=8pt,
+  frame=single,
+  rulecolor=\color{VMBeige},
+  backgroundcolor=\color{VMSoftCream},
+  breaklines=true,
+  showstringspaces=false,
+  tabsize=2,
+  columns=fullflexible
+}
+
+\lstset{style=vmcode}
+
+\endinput

@@ -1,0 +1,35 @@
+\section{Business Context and Scope}
+
+The original business question is where shoulder-season marketing or pricing effort could generate value in European platform tourism. At country level, that question cannot be answered directly. A campaign targets a destination and time window, not an entire country in aggregate. For example, the relevant decision is closer to ``Athens in April'' or ``Dubrovnik in September'' than to ``Greece'' or ``Croatia'' as a whole.
+
+The country screen is therefore an upstream decision layer. It identifies which countries justify the cost of acquiring and validating finer geographic data.
+
+\begin{decision}
+\textbf{Phase 1 decision.} Which European countries should be prioritized for regional and city-level follow-up analysis?
+\end{decision}
+
+\subsection{Scope rationale}
+
+Phase 1 screens the available European country panel. Phase 2 intentionally narrows deeper analysis to the top-ranked shortlisted countries. This is a release-scope decision: regional and city-level analysis introduces additional data acquisition, geographic joins, validation work, and local-market interpretation. Applying that full workflow to every European country would make the project broader but not necessarily more decision-ready.
+
+The objective of this portfolio release is to demonstrate a reproducible decision framework on a focused, high-signal subset. Countries outside the shortlist remain part of the Phase 1 benchmark and can be added in later releases if the framework is expanded.
+
+\subsection{Method in brief}
+
+The country opportunity score combines three normalized signals:
+
+\begin{itemize}
+  \item \textbf{Demand level}: recent mean annual platform nights, log-scaled to prevent the largest markets from fully dominating the score.
+  \item \textbf{Growth}: recent growth versus a prior baseline.
+  \item \textbf{Seasonality concentration}: summer peak concentration as a signal of potential shoulder-season redistribution.
+\end{itemize}
+
+\begin{methodnote}
+The default country score is \(0.45\times\text{demand level} + 0.30\times\text{growth} + 0.25\times\text{seasonality concentration}\). The score is ordinal and directional. It ranks countries for follow-up investigation; it is not an uplift estimate, forecast, or causal model.
+\end{methodnote}
+
+\subsection{Decision boundary}
+
+\begin{limitation}
+This report should not be used to allocate campaign budget directly. It should be used to decide where to invest in Phase 2 regional analysis and Phase 3 city-level investment scoring.
+\end{limitation}

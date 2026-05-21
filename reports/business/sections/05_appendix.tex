@@ -1,0 +1,41 @@
+\section{Appendix}
+
+\subsection{Validation summary}
+
+The country-screening release should be treated as defensible only if the following checks pass:
+
+\begin{qualitycheck}
+\begin{enumerate}
+  \item Required columns exist in the country-month and component marts.
+  \item Scoring rows have no null values in required fields.
+  \item Country coverage matches across marts.
+  \item Country-year coverage is complete for years used in scoring.
+  \item Duplicate country-month keys are not present after filtering.
+  \item Score components remain within expected normalized bounds.
+  \item Sensitivity analysis confirms whether the top-five shortlist is stable enough for a screening decision.
+\end{enumerate}
+\end{qualitycheck}
+
+\subsection{Sensitivity interpretation}
+
+The score weights are judgmental, so the business recommendation should focus on shortlist stability rather than precise rank order. If a country enters the top five only under a growth-led scenario, it should be treated as a watchlist case rather than an immediate Phase 2 priority.
+
+\subsection{Limitations}
+
+\begin{limitation}
+Country-level aggregation hides destination-level heterogeneity. A country may rank highly because of one or two cities, because of a broad regional pattern, or because multiple destination types are averaged together. These cases require different commercial responses and cannot be distinguished at country level.
+\end{limitation}
+
+\begin{limitation}
+The model does not yet include campaign cost, supply availability, regulation, price elasticity, competitive intensity, or historical campaign response. These variables must be introduced before final investment decisions.
+\end{limitation}
+
+\subsection{Reproducibility commands}
+
+\begin{terminal}
+uv sync
+uv run python main.py
+uv run marimo edit notebooks/02_country_screening.py
+quarto render reports/technical/country_screening_methodology.qmd
+cd reports/business && make pdf
+\end{terminal}

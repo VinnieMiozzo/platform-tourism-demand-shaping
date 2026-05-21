@@ -1,0 +1,22 @@
+% styles/vm-business.sty
+% Business report variant.
+
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{styles/vm-business}[2026/05/20 VM business report style]
+
+\addtokomafont{section}{\Large}
+\addtokomafont{subsection}{\large}
+
+\newenvironment{businesscontext}
+{\section{Business Context}}
+{}
+
+\newenvironment{keyfindings}
+{\section{Key Findings}}
+{}
+
+\newenvironment{nextsteps}
+{\section{Next Steps}}
+{}
+
+\endinput
